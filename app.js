@@ -6,9 +6,9 @@ require('./db');
 
 const app = express();
 
-const projectRouter = require('./routes/project.routes');
-const bookRouter = require('./routes/book.routes');
-const articleRouter = require('./routes/article.routes');
+const projectRouter = require('./routes/projects.routes');
+const bookRouter = require('./routes/books.routes');
+const articleRouter = require('./routes/articles.routes');
 
 app.use(bodyParser.json());
 

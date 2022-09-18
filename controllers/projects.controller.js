@@ -54,22 +54,57 @@ const getProject = (req, res) => {
             res.status(200).json({
                 status: 'OK',
                 data: project
-            })
+            });
         })
         .catch(err => {
             res.status(404).json({
                 status: 'ERROR',
                 message: 'There is no project with id ' + id
-            })
+            });
         });
 }
 
 const updateProject = (req, res) => {
-
+    const id = req.params.projectId || 0;
+    const projectUpdates = req.body.project || {};
+    // check that some data is available
+    if (!projectUpdates.title && !projectUpdates.description && !projectUpdates.stack) {
+        res.status(400).json({
+            status: 'ERROR',
+            message: 'Some data must be provided'
+        });
+        return;
+    }
+    Project.edit(id, projectUpdates.title, projectUpdates.description, projectUpdates.stack)
+        .then(project => {
+            res.status(201).json({
+                status: 'OK',
+                data: project
+            });
+        })
+        .catch(err => {
+            res.status(404).json({
+                status: 'ERROR',
+                message: 'There is no project with id ' + id
+            });
+        });
 }
 
 const deleteProject = (req, res) => {
-
+    const id = req.params.projectId ?? 0;   
+    Project.delete(id)
+        .then((project) => {
+            res.status(200).json({
+                status: 'OK',
+                data: project
+            });
+        })
+        .catch(err => {
+            res.status(404).json({
+                status: 'ERROR',
+                message: 'There is no project with id ' + id
+            });
+        });
 }
 
 module.exports = {

@@ -29,7 +29,19 @@ projectSchema.statics.insert = function (title, description, stack) {
     });
 };
 
-// TODO: complete the rest of the CRUD methods and implement one for add comments
+projectSchema.statics.edit = function (id, title, description, stack) {
+    return mongoose.model('Project').findByIdAndUpdate(id, {
+        title: title,
+        description: description,
+        stack: stack
+    }, { returnDocument: 'after'});
+};
+
+projectSchema.statics.delete = function(id) {
+    return mongoose.model('Project').findByIdAndDelete(id);
+}
+
+// TODO: Implement one function to add comments
 
 const Project = mongoose.model('Project', projectSchema);
 

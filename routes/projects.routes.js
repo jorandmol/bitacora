@@ -13,4 +13,7 @@ router.route('/:projectId')
     .put(projectsController.updateProject)
     .delete(projectsController.deleteProject);
 
+router.route('/:projectId/comments')
+    .post(projectsController.addComment);
+
 module.exports = router;

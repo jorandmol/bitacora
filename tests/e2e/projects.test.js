@@ -9,7 +9,7 @@ const app = require('../../app');
 
 const Project = require('../../models/Project');
 
-describe('Test projects ⚙ CRUD endpoints', () => {
+describe('Test /projects ⚙ CRUD endpoints', () => {
     let projectToSave;
     let projectToDelete;
 
@@ -118,5 +118,48 @@ describe('Test projects ⚙ CRUD endpoints', () => {
         projects.forEach(async (project) => {
             await Project.delete(project._id);
         });
+    });
+});
+
+describe('Test /projects additional endpoints', () => {
+    let project;
+
+    before(async () => {
+        project = await Project.insert('ProjectWithComments', 'It has comments', []);
+    });
+
+    it('POST /projects/:id/comments with unexisting id should return an error', (done) => {
+        request(app)
+            .post(`/projects/404/comments`)
+            .send({ comment: 'This comment will never be stored' })
+            .end((err, res) => {
+                expect(res.statusCode).to.equal(404);
+                done();
+            });
+    });
+
+    it('POST /projects/:id/comments with id but no data should return an error', (done) => {
+        request(app)
+            .post(`/projects/${project._id}/comments`)
+            .send({ comment: '' })
+            .end((err, res) => {
+                expect(res.statusCode).to.equal(400);
+                done();
+            });
+    });
+
+    it('POST /projects/:id/comments should return the updated project', (done) => {
+        request(app)
+            .post(`/projects/${project._id}/comments`)
+            .send({ comment: 'This comment has been stored succesfully' })
+            .end((err, res) => {
+                expect(res.statusCode).to.equal(201);
+                expect(res.body.data.comments.length).to.equal(1);
+                done();
+            });
+    });
+
+    after(async () => {
+        await Project.delete(project._id);
     });
 });

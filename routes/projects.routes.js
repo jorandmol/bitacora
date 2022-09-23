@@ -16,4 +16,8 @@ router.route('/:projectId')
 router.route('/:projectId/comments')
     .post(projectsController.addComment);
 
+router.route('/:projectId/comments/:commentId')
+    .delete(projectsController.deleteComment);
+
+
 module.exports = router;

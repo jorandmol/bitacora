@@ -42,10 +42,19 @@ projectSchema.statics.delete = function(id) {
 }
 
 // define instance methods
-// check if this function can be called succesfully in the controller method
 projectSchema.methods.addComment = function(body) {
     this.comments = [...this.comments, { body: body }];
     return this.save();
+}
+
+projectSchema.methods.deleteComment = function(commentId) {
+    let newComments = this.comments.filter(comment => comment._id != commentId);
+    if (this.comments.length === newComments.length) {
+        return Promise.reject({ code: 404 });
+    } else {
+        this.comments = newComments;
+        return this.save();
+    }
 }
 
 const Project = mongoose.model('Project', projectSchema);

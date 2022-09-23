@@ -48,8 +48,8 @@ const createNewProject = (req, res) => {
 }
 
 const getProject = (req, res) => {
-    const id = req.params.projectId ?? 0;   
-    Project.getById(id)
+    const projectId = req.params.projectId ?? 0;
+    Project.getById(projectId)
         .then((project) => {
             res.status(200).json({
                 status: 'OK',
@@ -59,13 +59,13 @@ const getProject = (req, res) => {
         .catch(err => {
             res.status(404).json({
                 status: 'ERROR',
-                message: 'There is no project with id ' + id
+                message: 'There is no project with id ' + projectId
             });
         });
 }
 
 const updateProject = (req, res) => {
-    const id = req.params.projectId ?? 0;
+    const projectId = req.params.projectId ?? 0;
     const projectUpdates = req.body.project ?? {};
     // check that some data is available
     if (!projectUpdates.title && !projectUpdates.description && !projectUpdates.stack) {
@@ -75,7 +75,7 @@ const updateProject = (req, res) => {
         });
         return;
     }
-    Project.edit(id, projectUpdates.title, projectUpdates.description, projectUpdates.stack)
+    Project.edit(projectId, projectUpdates.title, projectUpdates.description, projectUpdates.stack)
         .then(project => {
             res.status(201).json({
                 status: 'OK',
@@ -85,14 +85,14 @@ const updateProject = (req, res) => {
         .catch(err => {
             res.status(404).json({
                 status: 'ERROR',
-                message: 'There is no project with id ' + id
+                message: 'There is no project with id ' + projectId
             });
         });
 }
 
 const deleteProject = (req, res) => {
-    const id = req.params.projectId ?? 0;   
-    Project.delete(id)
+    const projectId = req.params.projectId ?? 0;
+    Project.delete(projectId)
         .then((project) => {
             res.status(200).json({
                 status: 'OK',
@@ -102,13 +102,13 @@ const deleteProject = (req, res) => {
         .catch(err => {
             res.status(404).json({
                 status: 'ERROR',
-                message: 'There is no project with id ' + id
+                message: 'There is no project with id ' + projectId
             });
         });
 }
 
 const addComment = (req, res) => {
-    const id = req.params.projectId ?? 0;
+    const projectId = req.params.projectId ?? 0;
     const comment = req.body.comment ?? '';
     if (!comment) {
         res.status(400).json({
@@ -117,11 +117,9 @@ const addComment = (req, res) => {
         });
         return;
     }
-    Project.getById(id)
+    Project.getById(projectId)
         .then((project) => {
-            let comments = [...project.comments, { body: comment }];
-            project.comments = comments;
-            project.save()
+            project.addComment(comment)
                 .then((projectWithNewComment) => {
                     res.status(201).json({
                         status: 'OK',
@@ -139,7 +137,42 @@ const addComment = (req, res) => {
         .catch((err) => {
             res.status(404).json({
                 status: 'ERROR',
-                message: 'There is no project with id ' + id
+                message: 'There is no project with id ' + projectId
+            });
+        });
+}
+
+const deleteComment = (req, res) => {
+    const projectId = req.params.projectId ?? 0;
+    const commentId = req.params.commentId ?? 0;
+    Project.getById(projectId)
+        .then((project) => {
+            project.deleteComment(commentId)
+                .then((projectWithoutComment) => {
+                    res.status(201).json({
+                        status: 'OK',
+                        data: projectWithoutComment
+                    });
+                })
+                .catch(err => {
+                    if (err.code) {
+                        res.status(err.code).json({
+                            status: 'ERROR',
+                            message: 'There is no comment with id ' + commentId
+                        });
+                    } else {
+                        console.error(err);
+                        res.status(500).json({
+                            status: 'ERROR',
+                            message: 'There was an error with the server. Please try again later'
+                        });
+                    }
+                });
+        })
+        .catch((err) => {
+            res.status(404).json({
+                status: 'ERROR',
+                message: 'There is no project with id ' + projectId
             });
         });
 }
@@ -150,5 +183,6 @@ module.exports = {
     getProject,
     updateProject,
     deleteProject,
-    addComment
+    addComment,
+    deleteComment
 }

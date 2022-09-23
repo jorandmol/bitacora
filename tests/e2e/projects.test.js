@@ -123,6 +123,7 @@ describe('Test /projects ⚙ CRUD endpoints', () => {
 
 describe('Test /projects additional endpoints', () => {
     let project;
+    let commentToDelete;
 
     before(async () => {
         project = await Project.insert('ProjectWithComments', 'It has comments', []);
@@ -155,6 +156,26 @@ describe('Test /projects additional endpoints', () => {
             .end((err, res) => {
                 expect(res.statusCode).to.equal(201);
                 expect(res.body.data.comments.length).to.equal(1);
+                comment = res.body.data.comments[0];
+                done();
+            });
+    });
+
+    it('DELETE /projects/:projectId/comments/:commentId with unexisting id should return an error', (done) => {
+        request(app)
+            .delete(`/projects/${project._id}/comments/404`)
+            .end((err, res) => {
+                expect(res.statusCode).to.equal(404);
+                done();
+            });
+    });
+
+    it('DELETE /projects/:projectId/comments/:commentId with correct id should return OK', (done) => {
+        request(app)
+            .delete(`/projects/${project._id}/comments/${comment._id}`)
+            .end((err, res) => {
+                expect(res.statusCode).to.equal(201);
+                expect(res.body.data.comments.length).to.equal(0);
                 done();
             });
     });

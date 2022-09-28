@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "bitacora",
-    "dateExported": "2022-09-07T16:15:56.657Z",
+    "dateExported": "2022-09-28T18:33:12.774Z",
     "version": "1.1",
     "folders": [
         {
@@ -78,9 +78,14 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2022-09-07T16:09:03.448Z",
-            "modified": "2022-09-07T16:09:23.057Z",
+            "modified": "2022-09-18T17:27:53.310Z",
             "headers": [],
             "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"Test 2\",\n  \"description\": \"This is going to be deleted\"\n}",
+                "form": []
+            },
             "tests": []
         },
         {
@@ -116,11 +121,11 @@
             "colId": "c3d3a2df-241a-4d0e-af5c-41f0fa7c2c4d",
             "containerId": "843d5ccc-e42e-495e-afe4-7fe42a69c0e4",
             "name": "getProject",
-            "url": "http://localhost:3000/projects/1",
+            "url": "http://localhost:3000/projects/63220ac67fa20c02281cf0fa",
             "method": "GET",
             "sortNum": 30000,
             "created": "2022-09-07T16:10:18.608Z",
-            "modified": "2022-09-07T16:10:28.476Z",
+            "modified": "2022-09-14T17:09:59.926Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -158,13 +163,18 @@
             "colId": "c3d3a2df-241a-4d0e-af5c-41f0fa7c2c4d",
             "containerId": "843d5ccc-e42e-495e-afe4-7fe42a69c0e4",
             "name": "updateProject",
-            "url": "http://localhost:3000/projects/1",
+            "url": "http://localhost:3000/projects/63220ac67fa20c02281cf0fa",
             "method": "PUT",
             "sortNum": 40000,
             "created": "2022-09-07T16:10:46.190Z",
-            "modified": "2022-09-07T16:10:58.052Z",
+            "modified": "2022-09-18T17:27:17.464Z",
             "headers": [],
             "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"project\": {\n    \"stack\": [\n      {\"name\": \"js\"},\n      {\"name\": \"node\"}\n    ]\n  }\n}",
+                "form": []
+            },
             "tests": []
         },
         {
@@ -200,11 +210,11 @@
             "colId": "c3d3a2df-241a-4d0e-af5c-41f0fa7c2c4d",
             "containerId": "843d5ccc-e42e-495e-afe4-7fe42a69c0e4",
             "name": "deleteProject",
-            "url": "http://localhost:3000/projects/1",
+            "url": "http://localhost:3000/projects/63275519c43b3224b3302905",
             "method": "DELETE",
             "sortNum": 50000,
             "created": "2022-09-07T16:11:08.102Z",
-            "modified": "2022-09-07T16:11:15.327Z",
+            "modified": "2022-09-18T17:28:10.748Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -235,6 +245,25 @@
             "modified": "2022-09-07T16:15:45.785Z",
             "headers": [],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d9fea1a0-3e27-4334-8689-639bf1f059e4",
+            "colId": "c3d3a2df-241a-4d0e-af5c-41f0fa7c2c4d",
+            "containerId": "843d5ccc-e42e-495e-afe4-7fe42a69c0e4",
+            "name": "addComment",
+            "url": "http://localhost:3000/projects/632b511c47a0b9a8789b5d38/comments",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2022-09-21T17:58:03.288Z",
+            "modified": "2022-09-21T18:00:52.678Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"comment\": \"My first comment\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]

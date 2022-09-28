@@ -1,0 +1,14 @@
+name: Test main
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Build testing image and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build -t bitacora:latest --target test .
+      - run: docker run -rm bitacora:latest /bin/bash -c "npm run test"

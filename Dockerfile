@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1
 
-FROM node:18.9.1
+FROM node:18.9.1 as base
 
-# set environment variable to production
-ENV NODE_ENV=production
-
-# create the working directory
 WORKDIR /app
 
-# copy package.json and install (production) dependencies
 COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production
 
-# get the source code
+FROM base as test
+RUN npm ci
+COPY . .
+
+FROM base as prod
+ENV NODE_ENV=production
+RUN npm ci --production
 COPY . .

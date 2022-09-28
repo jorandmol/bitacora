@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker build -t bitacora:latest --target test .
-      - run: docker run -rm bitacora:latest /bin/bash -c "npm run test"
+      - run: docker run --rm bitacora:latest /bin/bash -c "npm run test"
